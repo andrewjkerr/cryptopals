@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"encoding/hex"
+	"bytes"
 )
 
 func main() {
@@ -19,18 +20,14 @@ func main() {
 		result[i] = hex1[i] ^ hex2[i]
 	}
 
-	expectedHex, _ := hex.DecodeString(expected)
-	expectedStr := string(expectedHex)
-	resultStr := string(result)
+	expectedBytes, _ := hex.DecodeString(expected)
 
-	if resultStr == expectedStr {
+	if bytes.Compare(result, expectedBytes) == 0 {
 		fmt.Println("Success!")
 	} else {
 		fmt.Println("Failure.")
 	}
 
-	expectedHexBytes, _ := hex.DecodeString(expectedStr)
-
-	fmt.Println("Expected:", expectedHexBytes)
-	fmt.Println("Got:", result)
+	fmt.Println("Expected:", hex.EncodeToString(expectedBytes))
+	fmt.Println("Got:", hex.EncodeToString(result))
 }
